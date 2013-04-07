@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<title>Testing Socket.io</title>
+		<script src="dist/socket.io.js"></script>
+	</head>
+	<body>
+		<h1>Testing Socket.io</h1>
+		<script>
+			var endpoint = "http://localhost:5000";
+			var pipe = "restaurant_1";
+			
+			document.write("Connecting to "+endpoint+"<br/>");
+		  var socket = io.connect(endpoint);
+		  document.write("Listening on "+endpoint+"<br/>");
+		  socket.on(pipe, function (data) {
+		    document.write("Client Received: " + JSON.stringify(data));
+		    // socket.emit('my other event', { my: 'data' });
+		  });
+		</script>
+	</body>
+</html>
