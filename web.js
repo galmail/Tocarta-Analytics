@@ -8,10 +8,10 @@ var io = io.listen(app);
 app.use(express.bodyParser());
 
 // assuming io is the Socket.IO server object
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+// io.configure(function () { 
+  // io.set("transports", ["xhr-polling"]); 
+  // io.set("polling duration", 10); 
+// });
 
 app.get('/', function(request, response) {
   response.send('ToCarta NodeJS Server is up!');
