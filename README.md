@@ -1,5 +1,7 @@
 This is a Node.js Project of ToCarta.
 
+start this project with: foreman start
+
 The purpose of this project is to use Socket.io to enable Websockets and long polling
 with the Heroku platform. The reason is:
 

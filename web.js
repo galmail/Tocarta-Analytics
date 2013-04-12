@@ -32,7 +32,9 @@ app.get('/proxy', function (req, res) {
 	var action = req.query["action"];
 	if(channel!=null && action!=null){
 		console.log("sending action: "+action+" on channel: "+channel);
-		io.sockets.emit(channel, { action: action});
+		var new_action = decodeURI(action);
+		try { new_action = JSON.parse(new_action); } catch(ex){}
+		io.sockets.emit(channel, { action: new_action});
 		res.send('Push notification sent');
 	}
 	else {
