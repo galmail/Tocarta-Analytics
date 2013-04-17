@@ -1,9 +1,34 @@
 var express = require('express');
 var io = require('socket.io');
+var mongoose = require ("mongoose");
 
 var port = process.env.PORT || 5000;
+
 var app = express.createServer(express.logger());
 var io = io.listen(app);
+
+///////// MONGODB START /////////
+
+var Mongo = {};
+
+Mongo.uri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
+
+mongoose.connect(Mongo.uri, function (err, res) {
+  if (err) { 
+  	console.log ('ERROR connecting to: ' + Mongo.uri + '. ' + err);
+  } else {
+  	console.log ('Succeeded connected to: ' + Mongo.uri);
+  }
+});
+
+Mongo.messageSchema = new mongoose.Schema({
+  channel: { type: String, trim: true },
+  action: { type: mongoose.Schema.Types.Mixed }
+});
+
+Mongo.Message = mongoose.model('messages', Mongo.messageSchema);
+
+///////// MONGODB END /////////
 
 app.use(express.bodyParser());
 
@@ -35,6 +60,14 @@ app.get('/proxy', function (req, res) {
 		var new_action = decodeURI(action);
 		try { new_action = JSON.parse(new_action); } catch(ex){}
 		io.sockets.emit(channel, { action: new_action});
+		
+		// Saving message in DB
+		var message = new Mongo.Message ({
+		  channel: channel,
+		  action: new_action
+		});  
+		message.save(function (err) {if (err) console.log ('Error on save!')});
+		
 		res.send('Push notification sent');
 	}
 	else {

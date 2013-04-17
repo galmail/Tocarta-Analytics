@@ -1,12 +1,24 @@
 {
   "name": "tocarta-node",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "ToCarta NodeJS sync tablets and phones over websockets",
+  "author": "ToCarta",
+  "license": "GPL",
+  "main": "app.js",
   "dependencies": {
     "express": "2.5.x",
-    "socket.io": "0.9.x"
+    "socket.io": "0.9.x",
+    "mongoose": "3.5.7",
+    "mongodb": "1.2.x"
   },
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
-  }
+  },
+  "changelog" : [
+  	{"0.0.0": "Initial release"},
+  	{"0.1.0": "Socket.io added, now support fully websockets"},
+  	{"0.2.0": "MongoDB added, now logging all messages"}
+  ],
+  "homepage" : "http://tocarta-node.herokuapp.com"
 }
