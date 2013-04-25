@@ -31,26 +31,13 @@ Mongo.Message = mongoose.model('messages', Mongo.messageSchema);
 ///////// MONGODB END /////////
 
 app.use(express.bodyParser());
+app.use(express.static(__dirname + '/analytics'));
 
 // assuming io is the Socket.IO server object
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
-
-app.get('/', function(request, response) {
-  response.send('ToCarta NodeJS Server is up!');
-});
-
-app.get('/test', function (req, res) {
-  res.sendfile(__dirname + '/client/index.html');
-});
-
-app.get('/dist*', function (req, res) {
-	console.log('aaaaaa');
-  res.sendfile(__dirname + '/client/dist/socket.io.js');
-});
-
 
 app.get('/proxy', function (req, res) {
 	var channel = req.query["channel"];

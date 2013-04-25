@@ -1,3 +1,10 @@
+Analytics Service is using:
+
+https://github.com/tocarta/admin-template
+
+https://developers.google.com/chart/interactive/docs/gallery
+
+
 This is a Node.js Project of ToCarta.
 
 start this project with: foreman start
