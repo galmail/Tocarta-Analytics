@@ -7,6 +7,24 @@ var port = process.env.PORT || 5000;
 var app = express.createServer(express.logger());
 var io = io.listen(app);
 
+
+///////// CORS middleware (just for testing) /////////
+
+// app.use(express.methodOverride());
+// var allowCrossDomain = function(req, res, next) {
+    // res.header('Access-Control-Allow-Origin', '*');
+    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    // res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    // // intercept OPTIONS method
+    // if ('OPTIONS' == req.method) {
+      // res.send(200);
+    // }
+    // else {
+      // next();
+    // }
+// };
+// app.use(allowCrossDomain);
+
 ///////// MONGODB START /////////
 
 var Mongo = {};
@@ -26,7 +44,15 @@ Mongo.messageSchema = new mongoose.Schema({
   action: { type: mongoose.Schema.Types.Mixed }
 });
 
+Mongo.logSchema = new mongoose.Schema({
+  timestamp: { type: Number },
+  device_id: { type: Number },
+  action: { type: String, trim: true },
+  data: { type: mongoose.Schema.Types.Mixed }
+});
+
 Mongo.Message = mongoose.model('messages', Mongo.messageSchema);
+Mongo.Log = mongoose.model('logs', Mongo.logSchema);
 
 ///////// MONGODB END /////////
 
@@ -37,6 +63,16 @@ app.use(express.static(__dirname + '/analytics'));
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
+});
+
+app.post('/proxy', function (req, res) {
+	var logs = req.body.logs;
+	// Saving log in DB
+	for (var i = 0; i < logs.length; i++) {
+	    var _log = new Mongo.Log(logs[i]);
+	    _log.save();
+	}
+	res.send({ result: true });
 });
 
 app.get('/proxy', function (req, res) {
