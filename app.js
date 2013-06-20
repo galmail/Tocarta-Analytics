@@ -46,7 +46,7 @@ Mongo.messageSchema = new mongoose.Schema({
 
 Mongo.logSchema = new mongoose.Schema({
   timestamp: { type: Number },
-  device_id: { type: Number },
+  device_id: { type: String, trim: true },
   action: { type: String, trim: true },
   data: { type: mongoose.Schema.Types.Mixed }
 });
