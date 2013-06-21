@@ -66,12 +66,17 @@ io.configure(function () {
 });
 
 app.post('/proxy', function (req, res) {
-	console.log(res);
-	var logs = req.body.logs;
-	// Saving log in DB
-	for (var i = 0; i < logs.length; i++) {
-	    var _log = new Mongo.Log(logs[i]);
-	    _log.save();
+	// console.log(res);
+	try {
+		var logs = req.body.logs;
+		// Saving log in DB
+		for (var i = 0; i < logs.length; i++) {
+		    var _log = new Mongo.Log(logs[i]);
+		    _log.save();
+		}
+	}
+	catch(ex){
+		console.log('+++++ ERROR: '+ex);
 	}
 	res.send({ result: true });
 });
